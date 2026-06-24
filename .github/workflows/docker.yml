@@ -3,11 +3,17 @@ on:
   push:
     branches:
       - main
-jobs:
-  build:
-    runs-on: ubuntu-latest
+  jobs:
+    docker:
+      runs-on: ubuntu-latest
     steps:
-      - name: Baixar código
-        uses: actions/checkout@v4
-      - name: Construir imagem Docker
+      - uses: actions/checkout@v4
+
+      - name: Criar imagem
         run: docker build -t meu-site .
+
+      - name: Executar container
+        run: docker run -d -p 8080:80 --name site meu-site
+        
+      - name: Verificar container
+        run: docker ps
